@@ -39,7 +39,7 @@ public class MapTest {
         BinaryOperator<String> mapper = (v1,v2) //-> null;
                                 -> v1.length() > v2.length() ? v1 : v2;
         Map<String,String> favorites = new HashMap<>();
-        favorites.put("Jenny", "Bus Tour");
+        favorites.put("Jenny", "Souza");
         favorites.put("Tom", "Bus Tour");
 
         favorites.merge("Jenny", "Skyride", mapper);

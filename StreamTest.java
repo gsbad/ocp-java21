@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 /*
  * STREAM STEPS
@@ -32,7 +33,26 @@ public class StreamTest {
                                                     x->x<100,
                                                     x->x+2); //seed & Predicate & UnaryOperator
      
-        
+        //Terminal Stream Operation
+        //count()
+        //min()
+        //max()
+        //findAny()
+        //findFirst()
+        //allMatch()
+        //anyMatch()
+        //noneMatch()
+        //forEach()
+        //reduce()
+        //collect()
+        //max é um terminal stream operation, portanto so roda uma vez e encerra a stream
+        //se sourceStreamInt tentar ser usado novamente lançará uma Exception em tempo de execução
+        Optional<Integer> maximo = sourceStreamInt.max((i1,i2) -> i1 - i2); 
+        maximo.ifPresent(System.out::println); //Consumer //99
+
+        //infiniteStream.forEach(x->System.out.println(x)); //roda infinitamente
+        //exemplo de codigo chain com stream
+        System.out.println(List.of(1,2,3,4,5,6).stream().reduce(1, (i1,i2) -> i1*i2)); //720
         
     }
 }

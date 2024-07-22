@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.BinaryOperator;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 /*
  * STREAM STEPS
@@ -33,6 +38,8 @@ public class StreamTest {
                                                     x->x<100,
                                                     x->x+2); //seed & Predicate & UnaryOperator
      
+        sourceStreamString.findAny().ifPresent(System.out::println); //findAny()
+
         //Terminal Stream Operation
         //count()
         //min()
@@ -53,6 +60,54 @@ public class StreamTest {
         //infiniteStream.forEach(x->System.out.println(x)); //roda infinitamente
         //exemplo de codigo chain com stream
         System.out.println(List.of(1,2,3,4,5,6).stream().reduce(1, (i1,i2) -> i1*i2)); //720
-        
+
+        var list = List.of("monkey", "2", "chimp");
+        Predicate<String> pred = x-> Character.isLetter(x.charAt(0));
+
+        System.out.println(list.stream().anyMatch(pred)); //anyMatch()
+        System.out.println(list.stream().allMatch(pred)); //allMatch()
+        System.out.println(list.stream().noneMatch(pred)); //noneMatch()
+
+        //Iterating
+        //infiniteStream2.forEach(System.out::println);
+
+        String result = String.format("%.2f%n", sourceStreamDouble.reduce(1.0, (x1,x2)->x1+x2));
+        System.out.println(result);
+
+        Stream<String> big = Stream.of("b","i","g");
+        Stream<String> wolf = Stream.of("w","o","l","f");
+        String palavra1 = big.reduce("",(s,c)->s+c);
+        String palavra2 = wolf.reduce("",String::concat);
+        System.out.println(palavra1 + " " + palavra2);
+
+        BinaryOperator<Integer> op = (a,b) -> a * b;
+        Stream<Integer> empty = Stream.empty();
+        Stream<Integer> oneElement = Stream.of(1);
+        Stream<Integer> fiveElements = Stream.of(1,2,3,4,5);
+
+        empty.reduce(op).ifPresent(System.out::println);
+        oneElement.reduce(op).ifPresent(System.out::println);
+        fiveElements.reduce(op).ifPresent(System.out::println);
+
+        //Collecting
+        Stream<String> stream = Stream.of("m", "i", "g", "u", "e", "l");
+        StringBuilder palavra3 = stream.collect(StringBuilder::new,
+                                                StringBuilder::append, 
+                                                StringBuilder::append);
+        System.out.println(palavra3); //miguel
+
+        Stream<String> stream2 = Stream.of("w","o","l","f");
+        TreeSet<String> palavra4 = stream2.collect(TreeSet::new,
+                                           TreeSet::add, 
+                                           TreeSet::addAll);
+        System.out.println(palavra4); //flow
+
+        Stream<String> stream3 = Stream.of("w","o","l","f");
+        TreeSet<String> palavra5 = stream3.collect(Collectors.toCollection(TreeSet::new));
+        System.out.println(palavra5); //flow
+
+        Stream<String> stream4 = Stream.of("w","o","l","f");
+        Set<String> palavra6 = stream4.collect(Collectors.toSet());
+        System.out.println(palavra6); //fwlo
     }
 }

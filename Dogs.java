@@ -59,7 +59,7 @@ public class Dogs implements Comparable<Dogs> {
         squirrels.add(new Squirrel(21, "tico"));
         squirrels.add(new Squirrel(11, "teco"));
 
-
+        //Collections.sort(squirrels); //Nao compila pois Squirrel n esta implementando Comparable
         Collections.sort(squirrels,c);
         System.out.println(squirrels);
 

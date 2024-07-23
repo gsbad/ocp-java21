@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class StreamTest {
      
         sourceStreamString.findAny().ifPresent(System.out::println); //findAny()
 
-        //Terminal Stream Operation
+        //TERMINAL STREAM OPERATIONS
         //count()
         //min()
         //max()
@@ -109,5 +110,36 @@ public class StreamTest {
         Stream<String> stream4 = Stream.of("w","o","l","f");
         Set<String> palavra6 = stream4.collect(Collectors.toSet());
         System.out.println(palavra6); //fwlo
+
+
+        //COMMON INTERMEDIATE OPERATIONS (metodos que retornam uma Stream)
+        //Usando a infiniteStream e infiniteStream2 criadas nas linhas 33, 34
+        Stream<Double> finiteStream = infiniteStream.limit(33).map((a)->a+1); //map
+        finiteStream.forEach(x->System.out.printf("%.3f%n", x));
+        
+        Stream<Integer> finiteStream2 = infiniteStream2.skip(11).limit(55); //skip, limit
+        finiteStream2.forEach(System.out::println);
+
+        List<String> zero = List.of();
+        var one = List.of("Bonobo");
+        var two = List.of("Mama Gorilla","Baby Gorilla");
+
+        Stream<List<String>> animals = Stream.of(zero,one,two);
+        animals.flatMap(m -> m.stream()).forEach(System.out::println); //flatMap
+
+        System.out.println("\nSorted: ");
+        var three = Stream.of("Bonobo");
+        var four = Stream.of("Mama Gorilla","Baby Gorilla");
+        Comparator<String> reverse = Comparator.reverseOrder(); //comparator p ser passado em sorted
+        
+        Stream.concat(three, four).sorted(reverse).forEach(System.out::println); //sorted, concat
+
+        var numbers = new ArrayList<>();
+        var letters = new ArrayList<>();
+        numbers.add(1);
+        letters.add('a');
+
+        Stream<List<?>> badPeeking = Stream.of(numbers,letters); //peek
+        badPeeking.peek(x->x.remove(0)).map(List::size).forEach(System.out::print); //00
     }
 }

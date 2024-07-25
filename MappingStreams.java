@@ -4,7 +4,7 @@ import java.util.stream.*;
 public class MappingStreams {
     public static void main(String[] args) {
 
-        
+
         Stream<String> objStream = Stream.of("Hello", "there", "my", "dear", "lovely", "unique", "friends");
         //Function Parameters when mapping between types of Streams
         //                 ToCreateStream    ToCreateDoubleStream    ToCreateIntStream   ToCreateLongStream
@@ -35,14 +35,21 @@ public class MappingStreams {
         OptionalDouble optional = stream.average(); //average() always returns OptionalDouble
 
         optional.ifPresent(System.out::println); //5.5
-        if (optional.isPresent()) {
-            System.out.println(optional.getAsDouble()); //5.5
-        }
+        optional.ifPresentOrElse(
+                System.out::println, //5.5
+                ()->System.out.println("No average found!")
+        );
 
         long sum = longs.sum();
         System.out.println(sum); //6
-        DoubleStream doubles2 = DoubleStream.generate(()->Math.PI);
+
+        DoubleStream doubles2 = DoubleStream.generate(()->Math.PI).limit(10);
         OptionalDouble min = doubles2.min();
+        min.ifPresent(System.out::println);
+
+        Integer returnRange = range(IntStream.of(1, 2, 3, 4, 5));
+        // Summarizing Statistics
+        System.out.println("Summary Statistics: " + returnRange); // Should print 4
 
     }
     //Create a Stream from a primitive stream
@@ -51,5 +58,14 @@ public class MappingStreams {
     }
     private static Stream<Integer> boxing(IntStream stream){
         return stream.boxed();
+    }
+    private static int max(IntStream intStream){
+        OptionalInt optional = intStream.max();
+        return optional.orElseThrow(RuntimeException::new);
+    }
+    private static int range(IntStream intStream){
+        IntSummaryStatistics stats = intStream.summaryStatistics();
+        if (stats.getCount() == 0) throw new RuntimeException();
+        return stats.getMax()-stats.getMin();
     }
 }

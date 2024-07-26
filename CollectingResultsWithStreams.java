@@ -107,7 +107,10 @@ public class CollectingResultsWithStreams {
         //Teeing
         var list = List.of("x","y","z");
         Separations results = list.stream()
-                .collect(Collectors.teeing(Collectors.joining(","), Collectors.joining(" "), Separations::new));
+                .collect(Collectors.teeing(
+                                Collectors.joining(","), 
+                                Collectors.joining(" "), 
+                                Separations::new));
         System.out.println(results);
 
     }

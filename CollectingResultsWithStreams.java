@@ -1,6 +1,7 @@
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.mapping; //static import for using method mapping on line 102
+import static java.util.stream.Collectors.minBy; //static import for using method minBy on line 102
 import java.util.stream.Stream;
 
 public class CollectingResultsWithStreams {
@@ -66,6 +67,52 @@ public class CollectingResultsWithStreams {
         ));
         System.out.println(map6); //{4=[cats, dogs], 5=[lions, bears], 6=[tigers], 9=[elephants]}
 
+        var ohMy12 = Stream.of("lions", "tigers", "elephants", "bears", "dogs", "cats");
+        Map<Integer, Long> map9 = ohMy12.collect(Collectors.groupingBy(
+                String::length,
+                Collectors.counting() //Collector method: counting()
+        ));
+        System.out.println(map9); //{4=2, 5=2, 6=1, 9=1}
+
+        
+        //Partitioning
+
+        var ohMy10 = List.of("lions", "tigers", "elephants", "bears", "dogs", "cats");
+        Map<Boolean, List<String>> map7 = ohMy10.stream().collect(Collectors.partitioningBy( s -> s.length() <= 5 ));
+        System.out.println(map7); //{false=[tigers, elephants], true=[lions, bears, dogs, cats]}
+
+        var ohMy11 = List.of("lions", "tigers", "elephants", "bears", "dogs", "cats");
+        Map<Boolean, Set<String>> map8 = ohMy11.stream().collect(Collectors.partitioningBy( 
+                s -> s.length() <= 5,
+                Collectors.toSet()));
+        System.out.println(map8); 
+        //{false=[elephants, tigers], true=[cats, lions, dogs, bears]} (Natural ordered, because its a Set now)
+
+        var ohMy13 = List.of("lions", "tigers", "elephants", "bears", "dogs", "cats");
+        Map<Integer, Optional<Character>> map10 = ohMy13.stream().collect(Collectors.groupingBy( 
+                String::length,
+                Collectors.mapping(
+                        s->s.charAt(0),
+                        Collectors.minBy((a,b)->a-b)
+                )));
+        System.out.println(map10); //{4=Optional[c], 5=Optional[b], 6=Optional[t], 9=Optional[e]}
+
+        //Diminuindo boilerplate com inferencia e static import
+        var ohMy14 = Stream.of("lions", "tigers", "elephants", "bears", "dogs", "cats");
+        var map11 = ohMy14.collect(Collectors.groupingBy(String::length,
+                mapping(s->s.charAt(0), minBy((a,b)->a-b))));
+        System.out.println(map11); //{4=Optional[c], 5=Optional[b], 6=Optional[t], 9=Optional[e]}
+
+        
+        //Teeing
+        var list = List.of("x","y","z");
+        Separations results = list.stream()
+                .collect(Collectors.teeing(Collectors.joining(","), Collectors.joining(" "), Separations::new));
+        System.out.println(results);
 
     }
+    /**
+     * Record Separations
+     */
+    record Separations(String spaceSeparated, String commaSeparated) {}
 }

@@ -40,8 +40,10 @@ public class AdvancedStream {
         newBag.tryAdvance(System.out::println);
         newBag.tryAdvance(System.out::println);
         newBag.tryAdvance(System.out::println); //Nao imprime
+        
 
     }
+
 
     private static void threeDigit(Optional<Integer> optional){
 //        if (optional.isPresent()) {

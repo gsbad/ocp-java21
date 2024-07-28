@@ -113,6 +113,8 @@ public class CollectingResultsWithStreams {
                                 Separations::new));
         System.out.println(results);
 
+        int[] numero = new int[3];
+        System.out.println(numero);
     }
     /**
      * Record Separations

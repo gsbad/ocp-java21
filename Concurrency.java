@@ -6,7 +6,7 @@ public class Concurrency {
         2.1 - BLOCKED
         2.2 - WAITING
         2.3 - TIMED_WAITING
-     3 - TERMINATED
+    3 - TERMINATED
      */
     public static void teste(String[] args) {
         Runnable printInventory = () -> System.out.println("Printing zoo inventory!");

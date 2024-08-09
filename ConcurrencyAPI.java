@@ -19,15 +19,26 @@ public class ConcurrencyAPI {
                 System.out.println("Printing record: " + i);
             }
         };
-        try(ExecutorService service = Executors.newSingleThreadExecutor()) {
-            System.out.println("begin");
+        ExecutorService service = Executors.newSingleThreadExecutor(); //Not AutoCloseable, not work with try-with-resources
+        try{
+            System.out.println("begin\n");
+
             service.execute(printInventory);
             service.execute(printRecords);
             service.execute(printInventory);
-            System.out.println("end");
+
+            System.out.println("\nTry (isShutdown): " + service.isShutdown()); //false
+            System.out.println("Try: (isTerminated)" + service.isTerminated()); //false
+
+            System.out.println("\nend\n");
         } catch (RejectedExecutionException e) {
             System.out.println("Exception catched!");
+        } finally {
+            service.shutdown();
+            System.out.println("\nFinally (isShutdown): " + service.isShutdown()); //true
+            System.out.println("Finally: (isTerminated)" + service.isTerminated()); //false
         }
-
+        System.out.println("\nMainBlock (isShutdown): " + service.isShutdown()); //true
+        System.out.println("MainBlock: (isTerminated)" + service.isTerminated()); //false - Only terminated when main thread end
     }
 }

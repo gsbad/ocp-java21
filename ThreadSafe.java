@@ -1,17 +1,23 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ThreadSafe {
+//    private volatile int sheepCount = 0; Not so used! Can show up on exam!
+//    private AtomicInteger sheepCount = new AtomicInteger(0);
     private int sheepCount = 0;
     //SheepManager
     private void incrementAndReport(){
-        System.out.print(++sheepCount + " ");
+        synchronized (this){
+            System.out.print((++sheepCount) + " ");
+        }
     }
     public static void main(String[] args) {
         ExecutorService service = Executors.newFixedThreadPool(20);
         try {
-            ThreadSafe manager = new ThreadSafe();
-            for (int i = 0; i < 10; i++) service.submit(manager::incrementAndReport);
+            var manager = new ThreadSafe();
+            for (int i = 0; i < 10; i++)
+                service.submit(manager::incrementAndReport);
         }finally{
             service.shutdown();
         }

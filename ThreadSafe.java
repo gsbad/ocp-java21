@@ -7,10 +7,13 @@ public class ThreadSafe {
 //    private AtomicInteger sheepCount = new AtomicInteger(0);
     private int sheepCount = 0;
     //SheepManager
-    private void incrementAndReport(){
-        synchronized (this){
-            System.out.print((++sheepCount) + " ");
-        }
+//    private void incrementAndReport(){
+//        synchronized (this){              //SYNCHRONIZED BLOCK
+//            System.out.print((++sheepCount) + " ");
+//        }
+//    } EQUIVALENT WITH:
+    private synchronized void incrementAndReport(){     //SYNCHRONIZED METHOD MODIFIER
+        System.out.print((++sheepCount) + " ");
     }
     public static void main(String[] args) {
         ExecutorService service = Executors.newFixedThreadPool(20);

@@ -40,5 +40,28 @@ public class FilesAndDirectories {
         Path path6 = FileSystems.getDefault()
                 .getPath("/home","gsbad","desenvolvimento","ocp-java21","file","stripes.txt");
 
+        //Testing the method printPathInformation
+        FilesAndDirectories filesAndDirectories = new FilesAndDirectories();
+        filesAndDirectories.printPathInformation(
+                Path.of("/home/gsbad/desenvolvimento/ocp-java21/file/stripes.txt"));
+        filesAndDirectories.printPathInformation(
+                Path.of("./file/.././file/stripes.txt"));
+
+        //Resolving Paths
+        System.out.println("Resolve: "+
+                parent.toPath().resolve(file3.toPath())); ///home/gsbad/desenvolvimento/ocp-java21/file/stripes.txt
+        //Since the argument for the resolve method was a absolute path provided, that is the value returned:
+        System.out.println("Resolve: "+
+                parent.toPath().resolve("/absolute/prevails/gotit.txt")); ///absolute/prevails/gotit.txt
+
+    }
+
+    public void printPathInformation(Path path){
+        System.out.println("Filename is: " + path.getFileName());
+        System.out.println(" Root is: " + path.getRoot());
+        Path currentParent = path;
+        while ((currentParent = currentParent.getParent()) != null)
+            System.out.println("   Current parent is: "+currentParent);
+        System.out.println();
     }
 }

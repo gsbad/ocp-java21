@@ -128,6 +128,27 @@ public class FilesAndDirectories {
 //            e.printStackTrace();
 //        }
 
+        //Deleting a File with delete() and deleteIfExists()
+        if(Files.isDirectory(rabbitPath)) Files.delete(rabbitPath); //throws an exception (IOException)
+        if (Files.deleteIfExists(rabbitPath)) System.out.println("True - Just deleted!");
+            else System.out.println("False - Already deleted!");
+
+        //Comparing file uniqueness
+        System.out.println("Its the same file? "+
+                Files.isSameFile(Path.of("food.txt"),Path.of("zebra.txt"))); //symbolic link
+
+        //Comparing file with mismatch
+        System.out.print("Its the same content? ");
+        long mismatch = Files.mismatch(Path.of("wolf.txt"), Path.of("zebra.txt"));
+        if(mismatch == -1)
+            System.out.println("YES");
+        else if (mismatch == 1) {
+            System.out.println("NO");
+        }
+
+
+
+
     }
 
     public void printPathInformation(Path path){

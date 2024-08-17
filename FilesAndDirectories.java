@@ -57,11 +57,35 @@ public class FilesAndDirectories {
                 parent.toPath().resolve("/absolute/prevails/gotit.txt")); ///absolute/prevails/gotit.txt
 
         //Relativizing a Path
-        var caminho1 = Path.of("fish.txt");
-        var caminho2 = Path.of("friendly/birds.txt");
+        var caminho1 = Path.of("fish.txt"); //relative
+        var caminho2 = Path.of("friendly/birds.txt"); //relative
 
+        //relative.relativize(relative) works fine
         System.out.println(caminho1.relativize(caminho2));
         System.out.println(caminho2.relativize(caminho1));
+
+        var caminho3 = Path.of("/fish.txt"); //absolute
+        var caminho4 = Path.of("/friendly/birds.txt"); //absolute
+
+        //absolute.relativize(absolute) works fine
+        System.out.println(caminho3.relativize(caminho4));
+        System.out.println(caminho4.relativize(caminho3));
+
+        var caminho5 = Path.of("/fish.txt"); //absolute
+        var caminho6 = Path.of("friendly/birds.txt"); //relative
+
+        //absolute.relativize(relative) - throws an exception (IllegalArgumentException)
+        //System.out.println(caminho5.relativize(caminho6));
+        //System.out.println(caminho6.relativize(caminho5));
+
+        //In Windows-based Systems:
+//        var caminho5 = Path.of("C:\\primate\\chimpanze"); //absolute
+//        var caminho6 = Path.of("D:\\storage\\bananas.txt"); //absolute
+        //Differents root drives also throws IllegalArgumentException
+
+        //Normalizing a Path (remove the redundancies)
+        System.out.println("\nNormalize: "+Path.of("./file/.././file/stripes.txt").normalize());
+        //file/stripes.txt
 
     }
 

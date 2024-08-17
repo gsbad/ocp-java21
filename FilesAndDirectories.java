@@ -7,7 +7,7 @@ import java.io.*;
 import java.nio.file.*;
 
 public class FilesAndDirectories {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //Creating a File
         File file1 = new File("/home/gsbad/desenvolvimento/ocp-java21/file/stripes.txt");
         File file2 = new File("/home/gsbad/desenvolvimento/ocp-java21/file","stripes.txt");
@@ -86,6 +86,47 @@ public class FilesAndDirectories {
         //Normalizing a Path (remove the redundancies)
         System.out.println("\nNormalize: "+Path.of("./file/.././file/stripes.txt").normalize());
         //file/stripes.txt
+
+        //food.txt -> zebra.txt (symbolic link)
+        System.out.println(Paths.get("/home/gsbad/desenvolvimento/ocp-java21/food.txt").toRealPath());
+        //zebra.txt
+        System.out.println(Paths.get(".").toRealPath());
+
+        //Making Directories
+        System.out.println("\n------------- Making Directories -------------");
+        Files.createDirectories(rabbitPath); //rabbit directoryS created
+        if (Files.isDirectory(rabbitPath)) System.out.println(rabbitPath.normalize()+" directory created");
+        //createDirectory - Throw an execption if a directory already exist! In other way, use createDirectories
+
+        //copy throws exception if file already exist
+        Path anotherRabbit = Paths.get("./another-rabbit");
+//        if(!Files.isDirectory(anotherRabbit)) Files.copy(rabbitPath, anotherRabbit);
+//                else System.out.println(anotherRabbit.normalize()+" directory already created");
+        Files.copy(rabbitPath, anotherRabbit, StandardCopyOption.REPLACE_EXISTING);//Dont  throw exception
+
+        //Copying files with I/O Streams
+        try(var is = new FileInputStream("zebra.txt")) {
+            //Write IO Stream Data to a file
+            Files.copy(is,Paths.get("wolf.txt"),StandardCopyOption.REPLACE_EXISTING);
+        }
+        Files.copy(Paths.get("clown.xsl"), System.out); //linha 1
+
+        //Copying Files into a Directory
+        var file = Paths.get("wolf.txt");
+        var directory = Paths.get("./file/wolf.txt");
+        Files.copy(file,directory,StandardCopyOption.REPLACE_EXISTING);
+
+        //StandardCopyOption.ATOMIC_MOVE
+//        Path source = Paths.get("targetFile.txt");
+//        Path target = Paths.get("sourceFile.txt");
+//
+//        try {
+//            Files.move(source, target, StandardCopyOption.ATOMIC_MOVE);
+//            System.out.println("Arquivo movido com sucesso de forma atômica.");
+//        } catch (IOException e) {
+//            System.out.println("Erro ao mover o arquivo: " + e.getMessage());
+//            e.printStackTrace();
+//        }
 
     }
 

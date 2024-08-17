@@ -1,8 +1,10 @@
-import java.io.File;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+//import java.io.File;
+//import java.nio.file.FileSystems;
+//import java.nio.file.Files;
+//import java.nio.file.Path;
+//import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 
 public class FilesAndDirectories {
     public static void main(String[] args) {
@@ -47,12 +49,19 @@ public class FilesAndDirectories {
         filesAndDirectories.printPathInformation(
                 Path.of("./file/.././file/stripes.txt"));
 
-        //Resolving Paths
+        //Resolving Paths (concatenation)
         System.out.println("Resolve: "+
                 parent.toPath().resolve(file3.toPath())); ///home/gsbad/desenvolvimento/ocp-java21/file/stripes.txt
         //Since the argument for the resolve method was a absolute path provided, that is the value returned:
         System.out.println("Resolve: "+
                 parent.toPath().resolve("/absolute/prevails/gotit.txt")); ///absolute/prevails/gotit.txt
+
+        //Relativizing a Path
+        var caminho1 = Path.of("fish.txt");
+        var caminho2 = Path.of("friendly/birds.txt");
+
+        System.out.println(caminho1.relativize(caminho2));
+        System.out.println(caminho2.relativize(caminho1));
 
     }
 

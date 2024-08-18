@@ -12,7 +12,7 @@ public class SerializationTest {
         File dataFile = new File("gorilla.data");
 
         saveToFile(gorillas,dataFile); //Serialization
-        var gorillasFromDisk = readFromFile(dataFile);
+        var gorillasFromDisk = readFromFile(dataFile); //Deserialization
 
         System.out.println(gorillasFromDisk);
 

@@ -47,9 +47,16 @@ public class IOStreams {
         Path dest = Path.of("sharkscopy.log");
         try {
             readLazily(src);
+            //lines - lazily processes - Stream<String>
+            Files.lines(src).forEach(System.out::println);
+            //readAllLines - read entire file into memory - List<String>
+            Files.readAllLines(src).forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //Combining with newBufferedReader and newBufferedWriter
+
 
     }
 
@@ -71,8 +78,9 @@ public class IOStreams {
         }
     }
     static void copyTextFile(File src, File dest) throws IOException{
-        try (BufferedReader reader = new BufferedReader(new FileReader(src))) {
-            var writer = new PrintWriter(new FileWriter(dest));
+        try (BufferedReader reader = new BufferedReader(new FileReader(src));
+             var writer = new PrintWriter(new FileWriter(dest))) {
+
             String line = null;
             while ((line = reader.readLine()) != null){
                 writer.write(line);
@@ -99,6 +107,17 @@ public class IOStreams {
             s.filter(f->f.startsWith("WARN:"))
                 .map(f->f.substring(5))
                 .forEach(System.out::println);
+        }
+    }
+    //newBufferedReader & newBufferedWriter
+    static void copyPath(Path input, Path output) throws IOException{
+        try (var reader = Files.newBufferedReader(input);
+             var writer = Files.newBufferedWriter(output)) {
+            String line = null;
+            while ((line = reader.readLine()) != null){
+                writer.write(line);
+                writer.newLine();
+            }
         }
     }
 

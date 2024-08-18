@@ -16,6 +16,11 @@ public class SerializationTest {
 
         System.out.println(gorillasFromDisk);
 
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Name: ");
+        String userInput = reader.readLine();
+        System.out.println("You entedered: "+userInput);
+
     }
     static void saveToFile(List<Gorilla> gorillaList, File dataFile)
             throws IOException {
